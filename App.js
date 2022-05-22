@@ -25,7 +25,7 @@ const App = () => {
           },
           drawerStyle: {
             backgroundColor: '#000',
-            width: '40%',
+            width: '55%',
           },
         }}>
         <Drawer.Screen name="Home" component={HomeScreen} />

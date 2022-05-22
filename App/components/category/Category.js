@@ -30,7 +30,9 @@ const Category = ({item}) => {
       style={styles.item}
       onPress={() => navigation.navigate(capitalizedItem)}>
       <Image source={getImage()} style={styles.image} />
-      <Text style={(styles.itemText, {fontFamily: 'Starjedi'})}>{item}</Text>
+      <Text style={(styles.itemText, {fontFamily: 'Starjedi', color: '#000'})}>
+        {item}
+      </Text>
     </TouchableOpacity>
   );
 };
