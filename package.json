@@ -11,9 +11,13 @@
   },
   "dependencies": {
     "@react-navigation/drawer": "^6.4.1",
+    "accordion-collapse-react-native": "^1.1.0",
+    "pixabay-api": "^1.0.4",
     "react": "17.0.2",
     "react-native": "0.68.2",
     "react-native-gesture-handler": "^2.4.2",
+    "react-native-logs": "^4.0.1",
+    "react-native-paper": "^4.12.1",
     "react-native-reanimated": "^2.8.0",
     "react-native-safe-area-context": "^4.2.5",
     "react-native-screens": "^3.13.1"
