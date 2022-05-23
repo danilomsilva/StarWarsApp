@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView, FlatList} from 'react-native';
-import Category from './category/Category';
+
+import Category from '../components/Category';
 
 const HomeScreen = () => {
   const [data, setData] = useState([]);

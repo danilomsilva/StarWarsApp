@@ -1,18 +1,27 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
+/* IMPORTANT: Commented lines are for the use of context */
+
+import React, {useEffect, useState, useContext} from 'react';
+import {View, Text, StyleSheet, ActivityIndicator, Image} from 'react-native';
+import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
 import {
   Collapse,
   CollapseHeader,
   CollapseBody,
-  AccordionList,
 } from 'accordion-collapse-react-native';
 
+import {useDispatch, useSelector} from 'react-redux';
+import {starItem, removeItem} from '../store/redux/favourites';
+// import {StaredContext} from '../../store/context/stared-context';
+
 const ScreenBase = ({route}) => {
+  const {name: type} = route;
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const {name: type} = route;
+  // const staredContext = useContext(StaredContext);
+  // const {starItem, removeItem} = staredContext;
+  const favouriteNames = useSelector(state => state.favouritesItems.names);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setIsLoading(true);
@@ -30,32 +39,62 @@ const ScreenBase = ({route}) => {
   const mapData = data?.map(item => {
     if (type === 'People') {
       const {name, height, birth_year, films, vehicles, starships} = item;
+
+      // const isStared = staredContext?.names?.includes(name);
+      const isStared = favouriteNames.includes(name);
+
+      const handleStarItem = () => {
+        if (isStared) {
+          // removeItem(name);
+          dispatch(removeItem(name));
+        } else {
+          // starItem(name);
+          dispatch(starItem(name));
+        }
+      };
+
       return (
         <Collapse>
-          <CollapseHeader>
+          <CollapseHeader style={styles.collapseHeader}>
             <Text style={styles.group}>{name}</Text>
           </CollapseHeader>
           <CollapseBody>
-            <View key={name} style={styles.details}>
-              <View style={styles.itemDetail}>
-                <Text style={styles.key}>Height:</Text>
-                <Text style={styles.value}>{height || 'N/A'}</Text>
+            <View key={name} style={styles.details2Columns}>
+              <View>
+                <View style={styles.itemDetail}>
+                  <Text style={styles.key}>Height:</Text>
+                  <Text style={styles.value}>{height || 'N/A'}</Text>
+                </View>
+                <View style={styles.itemDetail}>
+                  <Text style={styles.key}>Birth Year:</Text>
+                  <Text style={styles.value}>{birth_year || 'N/A'}</Text>
+                </View>
+                <View style={styles.itemDetail}>
+                  <Text style={styles.key}>Films:</Text>
+                  <Text style={styles.value}>{films?.length || 'N/A'}</Text>
+                </View>
+                <View style={styles.itemDetail}>
+                  <Text style={styles.key}>Cars:</Text>
+                  <Text style={styles.value}>{vehicles?.length || 'N/A'}</Text>
+                </View>
+                <View style={styles.itemDetail}>
+                  <Text style={styles.key}>Starships:</Text>
+                  <Text style={styles.value}>{starships?.length || 'N/A'}</Text>
+                </View>
               </View>
-              <View style={styles.itemDetail}>
-                <Text style={styles.key}>Birth Year:</Text>
-                <Text style={styles.value}>{birth_year || 'N/A'}</Text>
-              </View>
-              <View style={styles.itemDetail}>
-                <Text style={styles.key}>Films:</Text>
-                <Text style={styles.value}>{films?.length || 'N/A'}</Text>
-              </View>
-              <View style={styles.itemDetail}>
-                <Text style={styles.key}>Cars:</Text>
-                <Text style={styles.value}>{vehicles?.length || 'N/A'}</Text>
-              </View>
-              <View style={styles.itemDetail}>
-                <Text style={styles.key}>Starships:</Text>
-                <Text style={styles.value}>{starships?.length || 'N/A'}</Text>
+              <View>
+                <TouchableOpacity
+                  style={styles.starPosition}
+                  onPress={handleStarItem}>
+                  <Image
+                    source={
+                      isStared
+                        ? require('../assets/images/stared.png')
+                        : require('../assets/images/not-stared.png')
+                    }
+                    style={styles.star}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
           </CollapseBody>
@@ -178,10 +217,6 @@ const ScreenBase = ({route}) => {
         MGLT,
         starship_class,
         pilots,
-        films,
-        created,
-        edited,
-        url,
       } = item;
       return (
         <Collapse>
@@ -355,6 +390,12 @@ const styles = StyleSheet.create({
   loaderText: {
     marginTop: 10,
   },
+  details2Columns: {
+    padding: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   details: {
     padding: 10,
   },
@@ -370,9 +411,15 @@ const styles = StyleSheet.create({
 
   value: {
     color: '#000',
+    wordBreak: 'break-all',
+    maxWidth: '70%',
   },
   group: {
     fontWeight: 'bold',
     color: '#000',
+  },
+  star: {
+    height: 25,
+    width: 25,
   },
 });

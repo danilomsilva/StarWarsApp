@@ -9,19 +9,19 @@ const Category = ({item}) => {
   const getImage = () => {
     switch (item) {
       case 'People':
-        return require('../../assets/images/people.png');
+        return require('../assets/images/people.png');
       case 'Planets':
-        return require('../../assets/images/planets.png');
+        return require('../assets/images/planets.png');
       case 'films':
-        return require('../../assets/images/films.png');
+        return require('../assets/images/films.png');
       case 'species':
-        return require('../../assets/images/species.png');
+        return require('../assets/images/species.png');
       case 'vehicles':
-        return require('../../assets/images/vehicles.png');
+        return require('../assets/images/vehicles.png');
       case 'starships':
-        return require('../../assets/images/starships.png');
+        return require('../assets/images/starships.png');
       default:
-        return require('../../assets/images/people.png');
+        return require('../assets/images/people.png');
     }
   };
 
